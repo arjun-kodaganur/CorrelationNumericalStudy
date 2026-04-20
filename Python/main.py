@@ -25,7 +25,7 @@ p = parameters(
 
 
 p.r = np.linspace(0.1, p.a , num=100)
-p.theta = np.linspace(-0.2*math.pi, 0.2*math.pi , num=100) 
+p.theta = np.linspace(-math.pi, math.pi , num=100) 
 
 initialize(p)
 
@@ -48,7 +48,6 @@ p.deldelnu = p.delnu_ar-p.delnu_br
 interaction_time(p)
 
 datasave(p)
-
 
 """a = 1.25
 v_perp = 2e8

@@ -32,12 +32,14 @@ def datasave(p:parameters):
         v_para.ravel(), B.ravel(), w_cyc.ravel(), k_para.ravel(), p.ddnu_br.ravel(),
         p.dddnu_br.ravel(), p.delnu_br.ravel(), p.delt_br.ravel(), p.De.ravel(), tb.ravel(),
         p.delmu.ravel(), p.v_perp.ravel(), p.ddnu_ar.ravel(), p.dddnu_ar.ravel(), p.delnu_ar.ravel(),p.delt_ar.ravel(),
-        p.deldelnu.ravel(),p.tau_2nd_order.ravel(),p.tau_3rd_order.ravel()
+        p.deldelnu.ravel(),p.tau_2nd_order_real.ravel(),p.tau_2nd_order_imag.ravel(),p.tau_3rd_order_real.ravel(),p.tau_3rd_order_imag.ravel(),
+        p.tau_3rd_order_SR_real.ravel(),p.tau_3rd_order_SR_imag.ravel()
     ])
 
     columns = ['r', 'theta', 'v_perp before resonance', 'v_para', 'B', 'w_cyc', 'k_para', 'ddnu before resonance'
                , 'dddnu before resonance', 'del nu before resonance', 'del t before resonance', 'De', 'tb', 'del mu', 'v_perp after resonance'
-               , 'ddnu after resonance', 'dddnu after resonance', 'del nu after resonance','del t after resonance','del del nu','Second order tau','Third order tau']
+               , 'ddnu after resonance', 'dddnu after resonance', 'del nu after resonance','del t after resonance','del del nu','Second order tau real'
+               ,'Second order tau imag','Third order tau real','Third order tau imag','Third order SR tau real','Third order SR tau imag']
     df = pd.DataFrame(data, columns=columns)
 
     df.to_csv('data.csv', index=False)

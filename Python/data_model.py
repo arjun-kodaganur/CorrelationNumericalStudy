@@ -59,5 +59,9 @@ class parameters:
 
     deldelnu:np.ndarray = None
 
-    tau_2nd_order:np.ndarray = None
-    tau_3rd_order:np.ndarray = None
+    tau_2nd_order_real:np.ndarray = None
+    tau_2nd_order_imag:np.ndarray = None
+    tau_3rd_order_real:np.ndarray = None
+    tau_3rd_order_imag:np.ndarray = None
+    tau_3rd_order_SR_real:np.ndarray = None
+    tau_3rd_order_SR_imag:np.ndarray = None
