@@ -58,3 +58,6 @@ class parameters:
     delnu_ar: np.ndarray = None
 
     deldelnu:np.ndarray = None
+
+    tau_2nd_order:np.ndarray = None
+    tau_3rd_order:np.ndarray = None

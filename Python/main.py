@@ -4,6 +4,7 @@ from phase_function import phase_function_variables
 from resonance import resonance_event
 from phase_change_calculation import change_in_phase
 from save_data import datasave
+from RF_interactiontime import interaction_time
 from plots import plot_at_xy
 import numpy as np
 import math
@@ -24,7 +25,7 @@ p = parameters(
 
 
 p.r = np.linspace(0.1, p.a , num=100)
-p.theta = np.linspace(0, 2*math.pi , num=100) 
+p.theta = np.linspace(-0.2*math.pi, 0.2*math.pi , num=100) 
 
 initialize(p)
 
@@ -44,11 +45,14 @@ p.delnu_ar,p.delt_ar = change_in_phase(p)
 
 p.deldelnu = p.delnu_ar-p.delnu_br
 
+interaction_time(p)
+
 datasave(p)
 
-a = 1.25
+
+"""a = 1.25
 v_perp = 2e8
 plot_at_xy(p.deldelnu,p.r,p.theta,p.v_perp_index,a,v_perp)
 plot_at_xy(p.ddnu,p.r,p.theta,p.v_perp_index,a,v_perp)
 plot_at_xy(p.dddnu,p.r,p.theta,p.v_perp_index,a,v_perp)
-plot_at_xy(p.delmu,p.r,p.theta,p.v_perp_index,a,v_perp)
+plot_at_xy(p.delmu,p.r,p.theta,p.v_perp_index,a,v_perp)"""
