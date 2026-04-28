@@ -49,6 +49,7 @@ class parameters:
     delmu: np.ndarray = None
     tb: np.ndarray = None
     del_v_perp:np.ndarray = None
+    del_v_para:np.ndarray = None
 
     delt: np.ndarray = None
     delnu: np.ndarray = None

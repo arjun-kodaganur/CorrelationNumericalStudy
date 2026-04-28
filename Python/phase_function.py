@@ -2,10 +2,15 @@ from data_model import parameters
 import numpy as np
 
 def velocity(p:parameters):
-    v_para = p.v_para[:,:,None]
+    v_para = p.v_para
     v_perp = p.v_perp
+
     if v_perp.ndim == 1:
         v_perp = v_perp[None, None, :]
+
+    if v_para.ndim == 2:
+        v_para = v_para[:,:,None]
+
     v_para,v_perp = np.broadcast_arrays(v_para, v_perp)
     p.v= np.sqrt(np.square(v_perp)+np.square(v_para))
     return p.v,v_para,v_perp
@@ -17,10 +22,15 @@ def B_radial(p:parameters):
     return p.Br
 
 def pitch(p:parameters):
-    v_para = p.v_para[:,:,None]
+    v_para = p.v_para
     v_perp = p.v_perp
+
     if v_perp.ndim == 1:
         v_perp = v_perp[None, None, :]
+
+    if v_para.ndim == 2:
+        v_para = v_para[:,:,None]
+
     v_para,v_perp = np.broadcast_arrays(v_para, v_perp)
 
     p.pitch = (v_para/p.v)
@@ -56,15 +66,37 @@ def ddt_Br_B(p:parameters):
     Btheta = ((r1*p.B0)/(p.q_safetyfactor*p.R))
     Btheta_over_B = (Btheta/p.B)
 
-    p.ddt_Br_over_B = (((p.v_para*Btheta_over_B)/r1)*ddtheta_Br_over_B)
+    v_para = p.v_para
+    v = p.v
+
+    if v_para.ndim == 2:
+        v_para = v_para[:,:,None]
+    
+    Btheta_over_B = Btheta_over_B[:,:,None]
+    ddtheta_Br_over_B = ddtheta_Br_over_B[:,:,None]
+    r1 = r1[:,:,None]
+
+    v,v_para = np.broadcast_arrays(v, v_para)
+    v,Btheta_over_B = np.broadcast_arrays(v, Btheta_over_B)
+    v,ddtheta_Br_over_B = np.broadcast_arrays(v, ddtheta_Br_over_B)
+    v,r1 = np.broadcast_arrays(v, r1)
+
+    p.ddt_Br_over_B = (((v_para*Btheta_over_B)/r1)*ddtheta_Br_over_B)
 
 def dddphase(p:parameters):
     v_perp = p.v_perp
     if v_perp.ndim == 1:
         v_perp = v_perp[None, None, :]
+
     R = p.R[:,:,None]
+
     R,v_perp = np.broadcast_arrays(R, v_perp)
-    ddt_Br_over_B = p.ddt_Br_over_B[:,:,None]
+
+    ddt_Br_over_B = p.ddt_Br_over_B
+
+    if ddt_Br_over_B.ndim == 2:
+        ddt_Br_over_B = ddt_Br_over_B[:,:,None]
+
     ddt_Br_over_B,v_perp = np.broadcast_arrays(ddt_Br_over_B, v_perp)
 
     p.vpara_0 = ((p.w_em-p.w0_cyc)*p.R0)/p.n_phi
