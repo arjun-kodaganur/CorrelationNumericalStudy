@@ -23,7 +23,7 @@ def v_parallel(p:parameters):
     return p.v_para
 
     
-def initialize(p:parameters):
+def initialize(p:parameters): # Calculate R, B, w_cyc, K_para, V_para for all r and theta
     position(p)
     magnetic_field(p)
     cyclotron_frequency(p)

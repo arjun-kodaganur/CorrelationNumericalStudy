@@ -1,7 +1,7 @@
 from data_model import parameters
 import numpy as np
 
-def velocity(p:parameters):
+def velocity(p:parameters): # Velocity is calculated at all grid points
     v_para = p.v_para
     v_perp = p.v_perp
 
@@ -15,13 +15,13 @@ def velocity(p:parameters):
     p.v= np.sqrt(np.square(v_perp)+np.square(v_para))
     return p.v,v_para,v_perp
 
-def B_radial(p:parameters):
+def B_radial(p:parameters): # Radial B field is calculated
     r1, theta1 = np.meshgrid(p.r, p.theta,indexing='ij')
     rsintheta = r1*np.sin(theta1)
     p.Br = -((rsintheta*p.B0)/(p.q_safetyfactor*p.R))
     return p.Br
 
-def pitch(p:parameters):
+def pitch(p:parameters): # Pitch, Pitch_g, Pitch_plus and Pitch_minus is calculated
     v_para = p.v_para
     v_perp = p.v_perp
 
@@ -43,7 +43,7 @@ def pitch(p:parameters):
 
     p.pitch_minus = -((1+np.sqrt(1+(3*np.square(p.pitch_g))))/(3*p.pitch_g))
 
-def ddphase(p:parameters):
+def ddphase(p:parameters): #Second derivative of phase function is calculated
     v_perp = p.v_perp
     if v_perp.ndim == 1:
         v_perp = v_perp[None, None, :]
@@ -60,7 +60,7 @@ def ddphase(p:parameters):
     p.Br_over_B_3D = (Br/B)
     p.ddnu = (((p.A/np.square(R))*p.Br_over_B_3D)*p.X)
 
-def ddt_Br_B(p:parameters):
+def ddt_Br_B(p:parameters): # Time derivative of (Br/B) is calculated
     r1, theta1 = np.meshgrid(p.r, p.theta,indexing='ij')
     ddtheta_Br_over_B = (-(r1*np.cos(theta1))/(p.R0*p.q_safetyfactor))
     Btheta = ((r1*p.B0)/(p.q_safetyfactor*p.R))
@@ -83,7 +83,7 @@ def ddt_Br_B(p:parameters):
 
     p.ddt_Br_over_B = (((v_para*Btheta_over_B)/r1)*ddtheta_Br_over_B)
 
-def dddphase(p:parameters):
+def dddphase(p:parameters): #Third derivative of phase function is calculated
     v_perp = p.v_perp
     if v_perp.ndim == 1:
         v_perp = v_perp[None, None, :]
@@ -110,7 +110,7 @@ def dddphase(p:parameters):
 
     p.dddnu = (first_term+second_term+third_term)
 
-def phase_function_variables(p:parameters):
+def phase_function_variables(p:parameters): 
     velocity(p)
     B_radial(p)
     pitch(p)

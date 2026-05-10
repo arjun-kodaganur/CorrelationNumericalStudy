@@ -9,45 +9,50 @@ from plots import plot_at_xy
 import numpy as np
 import math
 
-
+#Constants
 p = parameters(
-    R0= 3,
-    a=1.25,
-    B0= 3.5,
-    m= 3.343e-27,
-    q= 1.602e-19,
-    n_phi= 27,
-    w_em=167e6,
-    q_safetyfactor=2,
-    P_perp= 100e3,
-    ns=10e19  
+    R0= 3, # Major Radius
+    a=1.25, # Max. Minor Radius
+    B0= 3.5, # Magnetic field at magnetic axis
+    m= 3.343e-27, # Mass of Deuterium ion
+    q= 1.602e-19, # Charge of Deuterium ion
+    n_phi= 27, # Toroidal Mode number
+    w_em=167e6, # Frequency of EM Wave
+    q_safetyfactor=2, # Safety Factor
+    P_perp= 100e3, # Perpendicular power density
+    ns=1e18  # Ion number density
 )
 
-
+# Intialized r and Theta axis
 p.r = np.linspace(0.1, p.a , num=100)
 p.theta = np.linspace(-math.pi, math.pi , num=100) 
 
-initialize(p)
+initialize(p) # Calculate R, B, w_cyc, K_para, V_para for all r and theta
 
+# Initialized V_perp axis
 p.v_perp_index = np.linspace(1e6, 2e8 , num=100)
 
 p.v_perp = p.v_perp_index
 
-p.ddnu_br,p.dddnu_br = phase_function_variables(p)
+#______Before updation of change in magnetic moment, i.e. Before resonance______#
 
-p.delnu_br,p.delt_br = change_in_phase(p)
+p.ddnu_br,p.dddnu_br = phase_function_variables(p) # second and third derivative of phase function
 
-resonance_event(p)
+p.delnu_br,p.delt_br = change_in_phase(p) # Change is phase between resonances and time between resonances are obtained.
 
-p.ddnu_ar,p.dddnu_ar = phase_function_variables(p)
+resonance_event(p) # velocity vectors are updated with obtained S.D of magnetic moment.
 
-p.delnu_ar,p.delt_ar = change_in_phase(p)
+#______After updation of change in magnetic moment, i.e. After resonance______#
 
-p.deldelnu = p.delnu_ar-p.delnu_br
+p.ddnu_ar,p.dddnu_ar = phase_function_variables(p)  # second and third derivative of phase function
 
-interaction_time(p)
+p.delnu_ar,p.delt_ar = change_in_phase(p) # Change is phase between resonances and time between resonances are obtained.
 
-datasave(p)
+p.deldelnu = p.delnu_ar-p.delnu_br # Change in Change in phase between resonances before and after resonance
+
+interaction_time(p) # Interaction time calculation - Second and third order approximation
+
+datasave(p) # saves data in csv format
 
 """a = 1.25
 v_perp = 2e8

@@ -2,16 +2,16 @@ from data_model import parameters
 import numpy as np
 import math
 
-def diffusion_coefficient(p:parameters):
+def diffusion_coefficient(p:parameters): # Diffusion Coefficient from Stix Formulation
     E = 0.5*(p.m)*(np.square(p.v))
     
     p.De = (2*E*p.P_perp)/(3*p.ns)
 
-def bounce_time(p:parameters):
+def bounce_time(p:parameters): # Bounce time
 
     p.tb = ((2*math.pi)*(p.R0*p.q_safetyfactor))/(np.abs(p.v))
 
-def change_in_magnetic_moment(p:parameters):
+def change_in_magnetic_moment(p:parameters): # S.D of magnetic moment
     v_perp = p.v_perp[None,None,:]
     
     """tb = p.tb[:,:,None]
@@ -20,9 +20,11 @@ def change_in_magnetic_moment(p:parameters):
     B = p.B[:,:,None]
     B,v_perp = np.broadcast_arrays(B, v_perp)
 
-    p.delmu = np.sqrt((2*p.De*p.tb)/np.square(B))
+    B_res = (p.w_em*p.m)/(p.q) # Magnetic field at cold resonance
 
-def change_in_v(p:parameters):
+    p.delmu = np.sqrt((2*p.De*p.tb)/np.square(B_res)) 
+
+def change_in_v(p:parameters): # Updated velocities using S.D of magnetic field
     v_para = p.v_para
     v_perp = p.v_perp
     if v_perp.ndim == 1:

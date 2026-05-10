@@ -1,4 +1,4 @@
-%data = readmatrix("data.csv");
+data = readmatrix("data.csv");
 
 sindelnu = sin(data(:,18));
 

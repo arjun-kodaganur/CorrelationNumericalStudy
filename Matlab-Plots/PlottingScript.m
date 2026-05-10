@@ -1,8 +1,8 @@
-%data = readmatrix("data.csv");
+data = readmatrix("data.csv");
 
-%data_r2975 = data(170001:180000,:);
+data_r2975 = data(170001:180000,:);
 
-%data_r2975_vperp5e6 = data_r2975(3:100:end,:);
+data_r2975_vperp5e6 = data_r2975(3:100:end,:);
 
 % Basic plots
 figure;
@@ -217,3 +217,19 @@ grid on;
 
 
 %}
+
+figure;
+plot(data_r2975_vperp5e6(:,2),data_r2975_vperp5e6(:,10)/(2*pi),'k','LineWidth',2);
+hold on;
+plot(data_r2975_vperp5e6(:,2), data_r2975_vperp5e6(:,18)/(2*pi), 'r', 'LineWidth', 1.5,'LineStyle','--');
+
+plot(data_r2975_vperp5e6(:,2),data_r2975_vperp5e6(:,20)/(2*pi),'b','LineWidth',1.5);
+hold off;
+xlabel('$\theta$', 'Interpreter', 'latex',FontSize=20);
+ylabel('$\frac{\delta\Delta\nu}{2\pi}$,$\frac{\Delta\nu}{2\pi}$', 'Interpreter', 'latex',FontSize=20);
+title('$\theta$ vs $\frac{\delta\Delta\nu}{2\pi}$, $\frac{\Delta\nu}{2\pi}$', 'Interpreter', 'latex',FontSize=20);
+legend("Before Resonance","After Resonance","delta(Delta(nu))",'Location','bestoutside',FontSize=15)
+xlim([-pi pi])
+ylim([-1 1])
+grid on;
+

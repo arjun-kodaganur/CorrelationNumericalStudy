@@ -3,19 +3,19 @@ import numpy as np
 from scipy import special
 import math
 
-def second_order_interaction_time(p:parameters):
+def second_order_interaction_time(p:parameters): #Second order approximation of interaction time
     ddnu_br =  p.ddnu_br.astype(complex)
     out_arr = np.zeros_like(p.ddnu_br, dtype=np.complex128) + 1
     p.tau_2nd_order_real = np.real(np.sqrt(np.divide((2*math.pi*1j),ddnu_br, out=out_arr, where=p.ddnu_br!=0)))
     p.tau_2nd_order_imag = np.imag(np.sqrt(np.divide((2*math.pi*1j),ddnu_br, out=out_arr, where=p.ddnu_br!=0)))
 
-def third_order_interaction_time(p:parameters):
+def third_order_interaction_time(p:parameters): #third order approximation of interaction time
     u = -(np.square(p.ddnu_br)/((2**(2/3)) * (np.cbrt(p.dddnu_br)**4)))
     ai, aip, bi, bip = special.airy(u)
     p.tau_3rd_order_real = np.real((2 * math.pi) * np.cbrt(2 / p.dddnu_br) * ai)
     p.tau_3rd_order_imag = np.imag((2 * math.pi) * np.cbrt(2 / p.dddnu_br) * ai)
 
-def third_order_single_resonance_interaction_time(p:parameters):
+def third_order_single_resonance_interaction_time(p:parameters): #Modified third order interaction time for single resonance evaluation
     u = np.zeros_like(p.ddnu_br,dtype=complex)
     u[:,0:50,:] = -(np.square(p.ddnu_br[:,0:50,:])/((2**(2/3)) * (np.cbrt(p.dddnu_br[:,0:50,:]**4)*(-0.5+(1j*np.sqrt(3)/2)))))
     u[:,50:100,:] = -(np.square(p.ddnu_br[:,50:100,:])/((2**(2/3)) * (np.cbrt(p.dddnu_br[:,50:100,:]**4)*(-0.5-(1j*np.sqrt(3)/2)))))
