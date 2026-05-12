@@ -1,5 +1,6 @@
 from data_model import parameters
 from intialization import initialize
+from trapped_particle import trapped_particle_calculation
 from phase_function import phase_function_variables
 from resonance import resonance_event
 from phase_change_calculation import change_in_phase
@@ -29,10 +30,16 @@ p.theta = np.linspace(-math.pi, math.pi , num=100)
 
 initialize(p) # Calculate R, B, w_cyc, K_para, V_para for all r and theta
 
-# Initialized V_perp axis
-p.v_perp_index = np.linspace(1e6, 2e8 , num=100)
+# Initialized perpendicular energy axis
+p.E_perp = np.linspace(1e3,1e6,num=100)
+
+# Initialized V_perp axis from E_perp
+p.v_perp_index = np.sqrt((2*p.E_perp*p.q)/p.m)
 
 p.v_perp = p.v_perp_index
+
+# Trapped or passing particle
+trapped_particle_calculation(p)
 
 #______Before updation of change in magnetic moment, i.e. Before resonance______#
 

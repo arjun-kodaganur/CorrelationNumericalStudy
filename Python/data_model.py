@@ -24,8 +24,11 @@ class parameters:
     k_para: np.ndarray = None
     v_para: np.ndarray = None
     v_perp: np.ndarray = None
+    E_perp: np.ndarray = None
     v_perp_index: np.ndarray = None
     v: np.ndarray = None
+    E: np.ndarray = None
+    trapped: np.ndarray = None
     v0_3D: np.ndarray = None
     Br: np.ndarray = None
     pitch: np.ndarray = None

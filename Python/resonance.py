@@ -3,9 +3,9 @@ import numpy as np
 import math
 
 def diffusion_coefficient(p:parameters): # Diffusion Coefficient from Stix Formulation
-    E = 0.5*(p.m)*(np.square(p.v))
+    p.E = 0.5*(p.m)*(np.square(p.v))
     
-    p.De = (2*E*p.P_perp)/(3*p.ns)
+    p.De = (2*p.E*p.P_perp)/(3*p.ns)
 
 def bounce_time(p:parameters): # Bounce time
 
@@ -36,17 +36,27 @@ def change_in_v(p:parameters): # Updated velocities using S.D of magnetic field
     B = p.B[:,:,None]
     B,v_perp = np.broadcast_arrays(B, v_perp)
 
-    p.del_v_perp = ((p.delmu*B)/(p.m*v_perp))
+    """p.del_v_perp = ((p.delmu*B)/(p.m*v_perp))
 
+    v_perp_new = v_perp+p.del_v_perp"""
+
+    v_perp_new = np.sqrt(((2*B*p.delmu)/(p.m))+np.square(v_perp))
+
+    p.del_v_perp = v_perp_new - v_perp   
+    
     B_res = (p.w_em*p.m)/(p.q)
 
-    num = -(v_perp*p.del_v_perp*(1-(B_res/p.B)))
+    """num = -(v_perp_new*p.del_v_perp*(1-(B_res/p.B)))
 
     p.del_v_para = np.divide(num,v_para,out=np.zeros_like(num),where=v_para!=0)
 
-    p.v_para = v_para+p.del_v_para
-    p.v_perp = v_perp+p.del_v_perp
+    p.v_para = v_para+p.del_v_para"""
+  
+    a = np.square(v_para)-(((2*B*p.delmu)/(p.m))*(1-(B_res/B)))
+    v_para_new = np.sqrt(a)
 
+    p.v_perp = v_perp_new
+    p.v_para = np.sign(v_para)*v_para_new
 
 def resonance_event(p:parameters):
     diffusion_coefficient(p)
